@@ -1,0 +1,40 @@
+{% load static %}
+<footer id="index_footer">
+    <div class="container">
+        <div class="row ">
+            <div class="col-4 mt-5">
+                <a class="navbar-brand" href="{% url 'home' %}" style="color:white">
+                    <img src="{% static 'img/logo.png' %}" alt="" width="50" height="50" class="d-inline-block align-text-top">
+                    LaptopFinds
+                </a>
+                <p>Designed and built with all the love in the world by the Nimrod Nyongesa.</p>
+                <p>Code licensed MIT, docs CC by 2.0</p>
+                <p>Currently v1.2.0
+            </div>
+            <div class="col-4 mt-5">
+                <a class="navbar-brand" href="{% url 'home' %}" style="color:white">
+                    Links
+                </a>
+                <ul>
+                    <li aria-current="true" style="color:inherit; background-color:grey; width:fit-content; text-decoration:none"><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}" style="color:inherit; text-decoration:none">About</a></li>
+                    <li><a href="{% url 'products' %}" style="color:inherit; text-decoration:none">Buy products</a></li>
+                    <li><a href="{% url 'offers' %}" style="color:inherit; text-decoration:none">Get Discounts</a></li>
+                    <li><a href="{% url 'cart' %}" style="color:inherit; text-decoration:none">Shop</a></li>
+                </ul>
+            </div>
+            <div class="col-4 mt-5">
+                <a class="navbar-brand" href="{% url 'home' %}" style="color:white">
+                    Social Media
+                </a>
+                <ul>
+                    <li>Linkedin</li>
+                    <li>Twitter</li>
+                    <li>Github</li>
+                    <li>Upwork</li>
+                    <li>Portfolio</li>
+                </ul>
+            </div>    
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,22 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>LaptopFinds</title>
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <meta name="description" content="laptopFinds is a website that allows people to find, buy and sell laptops">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/site_styles.css' %}">
+    </head>
+    <body style="background-color:rgb(232, 231, 231);">
+      {% include 'partials/_header.html' %}
+       <main>{% block content %}{% endblock %}</main>
+    </body>
+
+</html>

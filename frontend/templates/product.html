@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section >
+    <div class="container" id="product-wrapper">
+        {% if message != "" %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message.message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'products' %}">Products</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'products' %}">{{ product.category.title }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+        <div class="row" id="shipping-details" style="background-color:white;">
+            <div class="col-8" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                <div class="row">
+                    <div class="col-4" id="image-wrapper" >
+                        <img src="/static/img/samples/{{product.category.title}}.jpg" style="width:200px; height:220px;">
+                        <hr>
+                        <h6>SHARE THIS PRODUCT</h6>
+                        <img src="{% static 'img/Twitter.png' %}" style="width:25px; height:25px;" >
+                        <img src="{% static 'img/LinkedIn.png' %}" style="width:25px; height:25px;" >
+                    </div>
+                    <div class="col-8" id="product-info-wrapper">
+                        <span class="badge rounded-pill bg-primary">Ex UK</span>
+                        <span class="badge rounded-pill bg-primary">{% if product.fixed_price %}Fixed price {% else %} Bargain {% endif %}</span>
+                        <h3>{{ product.name }}</h3>
+                        <p>Brand: <a href="{% url 'api:product' %}/?category={{ product.category.title }}">{{ product.category.title }}</a> | <a href="{% url 'api:product' %}/?category={{ product.category.title }}">Similar products from {{ product.category.title }}</a></p>
+                        <hr>
+                        <h4><strong>Ksh. {{ product.price }}</strong></h4>
+                        <a disabled style="color:{% if product.inventory >= 5 %}green; {% else %}red; {% endif %}">{{ product.inventory}} units left</a>
+                        <p class="text-muted">+ Free shipping countrywide </p>
+                        <div class="buttons-wrapper" style="display:flex; flex-direction:row; justify-content:space-between;">
+                            {% comment %} <div class="input-group" style="width:25%;">
+                                <a class="btn btn-success" id="basic-addon1">-</a>
+                                <input type="text" class="form-control" value="1" placeholder="1">
+                                <a class="btn btn-success" id="basic-addon2">+</a>
+                            </div> {% endcomment %}
+                            <div class="input-group" style="width:25%">
+                                <a href="/site/cart/{{product.id}}" class="btn btn-success">Add to cart</a>
+                            </div>
+                            {% if not product.fixed_price %}
+                            <div class="input-group" style="width:45%;">
+                                <input type="text" class="form-control">
+                                <a class="btn btn-success" id="basic-addon3">Send offer</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <h6>PROMOTIONS</h6>
+                        <span><a href="" disabled>Free laptop bag and a wireless mouse</a></span>
+                        <p><a href="" disabled>Easy and safer payments via Mpesa and Visa</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 " id="ds-wrapper" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                <div class="container">
+                    <div class="row" id="delivery_and_returns">
+                        <h6>DELIVERY & RETURNS</h6>
+                        <hr>
+                        <p>Choose your location</p>
+                        <div class="btn-group dropup">
+                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                              Locations
+                            </button>
+                            <ul class="dropdown-menu">
+                              <!-- Dropdown menu links -->
+                              <li><a class="dropdown-item" href="#">Slaughter</a></li>
+                              <li><a class="dropdown-item" href="#">Mungoni</a></li>
+                              <li><a class="dropdown-item" href="#">Marine</a></li>
+                              <li><a class="dropdown-item" href="#">Gate C</a></li>
+                              <li><a class="dropdown-item" href="#">Ndagani</a></li>
+                              <li><a class="dropdown-item" href="#">Sun mack</a></li>
+                            </ul>
+                        </div>
+                        <span class="d-flex-column mt-2">Door Delivery<span>
+                        <small class="d-flex">Ready for delivery within 6hours if ordered now </small>
+                        <hr>
+                        <span class="d-flex">Return policy</span>
+                        <small>Easy return, Quick refund</small>
+                        <hr>
+                        <span class="d-flex">Warranty</span>
+                        <small>1 year</small>
+                    </div>
+                    <div class="row" id="seller_info"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="product-details" style="border:1px solid black;  background-color:white;">
+            <div class="col-8" style="border:1px solid black;">
+                <div class="row" id="description"></div>
+                <div class="row" id="specification"></div>
+                <div class="row" id="more_from_vendor"></div>
+            </div>
+            <div class="col-4" style="border:1px solid black;"></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

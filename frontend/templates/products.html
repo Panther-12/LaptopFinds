@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+<div class="container" id="products-wrapper">
+    <div class="category-wrapper bg-white" id="category-wrapper"></div>
+    <div class="body-wrapper">
+        <div id="products-container">
+            <div class="row d-flex mx-5" id="products-row"></div>
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end" id="pages">
+            <li class="page-item ">
+                <a class="page-link btn btn-primary active" href="{% url 'api:product' %}?page=1">First</a>
+            </li>
+            <li class="page-item "><a class="page-link btn btn-primary" href="{% url 'api:product' %}?page=2">2</a></li>
+            <li class="page-item "><a class="page-link btn btn-primary" href="{% url 'api:product' %}?page=3">3</a></li>
+            <li class="page-item "><a class="page-link btn btn-primary" href="{% url 'api:product' %}?page=4">4</a></li>
+            <li class="page-item "><a class="page-link btn btn-primary" href="{% url 'api:product' %}?page=5">5</a></li>
+            <li class="page-item ">
+                <a class="page-link btn btn-primary" href="{% url 'api:product' %}?page=6">Last</a>
+            </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+{% include 'partials/_products_footer.html' %}
+<script>
+    function productDetails(e){
+        window.location.assign(`/site/product/${e.target.id}`)
+    }
+    function getCategories(){
+        var category_container = document.getElementById('category-wrapper')
+        fetch("{% url 'api:category' %}").then(response => response.json()).then(data => {
+            console.log(data);
+            for(var i=0; i<data.length; i++){
+                var title = data[i].title
+                const fill_Data = `<div class="row bg-inherit" style="padding:20px; background:url('/static/img/brand/${data[i].title}.png'); background-size:19%; background-repeat:no-repeat; background-position:center;">
+                </div>
+                <hr class="bg-black">`
+                category_container.insertAdjacentHTML('beforeend', fill_Data);
+            }
+        })
+    }
+    function getProducts(page=1){
+        fetch(`{% url 'api:product' %}?page=${page}`).then(response => response.json()).then(data => {
+            console.log(data)
+            for (var i = 0; i < data.length; i++) {
+                var new_component = `<div class="col-3 flex-row mx-2 mb-4 bg-white" id="col${1}" style="width:170px; padding:10px;">
+                    <img src="/static/img/samples/${data[i].category.title}.jpg" style="width:150px; height:150px;" id="${data[i].id}" onclick="productDetails(event)">
+                    <span class="badge bg-secondary" >Official Store</span></a>
+                    <h5>${data[i].name}</h5>
+                    <h6>${data[i].price}</h6>
+                    <small class="text-muted">
+                        ${data[i].fixed_price?"Fixed Price":"Bargain"}
+                    </small>
+                </div>`;
+                document.getElementById('products-row').insertAdjacentHTML("beforeend", new_component)
+            }
+        })
+    }
+    getProducts();
+    getCategories();
+    {% comment %} document.getElementById() {% endcomment %}
+</script>
+{% endblock %}

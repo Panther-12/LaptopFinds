@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+    <div class="container">
+    {{ user_cart }}
+        <div class="row gx-5 gy-5" style="height:100%">
+            <div class="col-8">
+                {% for item in user_cart.cart %}
+                <div class="row p-4 mt-4 bg-white" style="width:100%; height:fit-content; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                    <p>Cart ({{item.product_name}})</p>
+                    {{ item.product_name }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-4">
+                <div class="checkout-wrapper p-4 mt-4" style="width:100%; height:100%;">
+                    <div class="bottom-details  bg-white" style="width:100%; height:100%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                        {{ user_cart.total }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <p> Recommended for you </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
