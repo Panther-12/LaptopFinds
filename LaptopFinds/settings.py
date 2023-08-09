@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,11 +44,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'django_daraja',
+    'crispy_forms',
+    'crispy_bootstrap4',
     'api',
     'frontend',
 ]
 
-# CRISPY_TEMPLATE_PACK="bootstrap4"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -193,3 +195,12 @@ MPESA_INITIATOR_USERNAME = 'initiator_username'
 # Plaintext password for initiator (to be used in B2C, B2B, AccountBalance and TransactionStatusQuery Transactions)
 
 MPESA_INITIATOR_SECURITY_CREDENTIAL = 'initiator_security_credential'
+
+CRISPY_TEMPLATE_PACK="bootstrap4"
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+}

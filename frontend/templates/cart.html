@@ -3,28 +3,58 @@
 
 {% block content %}
 <section>
+    <div class="container p-4" style="color:white; align-items: center; background:url('/static/img/Shopping3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-blend-mode: lighten; box-sizing: border-box; opacity:0.8; ">
+        <p style="letter-spacing: 2px; ">Cart for {{ request.user }}</p>
+    </div>
+    {% include 'messages.html' %}
     <div class="container">
-    {{ user_cart }}
         <div class="row gx-5 gy-5" style="height:100%">
             <div class="col-8">
                 {% for item in user_cart.cart %}
-                <div class="row p-4 mt-4 bg-white" style="width:100%; height:fit-content; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
-                    <p>Cart ({{item.product_name}})</p>
-                    {{ item.product_name }}
+                <div class="row p-4 bg-white" style="width:100%; height:fit-content; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                    <p>Cart ({{item.cart_id}})</p>
+                    <div class="col-4" id="image-wrapper">
+                        <a href="/site/product/{{ item.product_id }}"><img src="/static/img/samples/LENOVO.jpg" style="width:100px; height:120px;"></a>
+                        <hr>
+                        <a disabled style="color:{% if item.quantity_left >= 5 %}green; {% else %}red; {% endif %}">{{ item.quantity_left }} units left</a>
+                    </div>
+                    <div class="col-5" id="product-info-wrapper">
+                        <span class="badge rounded-pill bg-primary">Ex UK</span>
+                        <h3>{{ item.product_name }}</h3>
+                        <p>Vendor: <a href="{% url 'api:product' %}">{{ item.vendor_name }}</a></p>
+                        <span class="text-muted">Quantity: {{ item.quantity }}</span></span>
+                        <hr>
+                        <p><strong>Ksh. {{ item.price }}</strong><p>
+                    </div>
+                    <div class="col-3" id="right-wrapper" >
+                        <div class="buttons-wrapper" style="display:flex; flex-direction:row; justify-content:space-between;">
+                            <div class="input-group" style="width:100%;">
+                                <a class="btn {% if item.quantity == 1%}btn-secondary{% else %}btn-success{% endif %}" id="basic-addon1" href="/site/remove-product/{{ item.cart_id }}">-</a>
+                                <input type="text" class="form-control" value="{{ item.quantity }}" placeholder="1">
+                                <a class="btn btn-success" id="basic-addon2" href="/site/add-product/{{ item.cart_id }}">+</a>
+                            </div> 
+                        </div>
+                        <a class="badge11 bg-danger" id="basic-addon3" href="/site/deleteCartItem/{{ item.cart_id }}" style="text-decoration: none;">Delete</a>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
-            <div class="col-4">
-                <div class="checkout-wrapper p-4 mt-4" style="width:100%; height:100%;">
-                    <div class="bottom-details  bg-white" style="width:100%; height:100%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
-                        {{ user_cart.total }}
+            <div class="col-4" style="position: fixed; margin-left:60%; margin-top: 0;">
+                <div class="checkout-wrapper p-4 mt-4" style="width:100%; height:fit-content;">
+                    <div class="bottom-details p-4 bg-white" style="width:100%; height:100%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                        <div class="order-details">
+                            <p><strong>Order quantity:</strong> {{ user_cart.items }}</p>
+                            <p><strong>Total Amount:</strong> Ksh.{{ user_cart.total }}</p>
+                        </div>
+                        <a class="btn btn-primary" href="{% url 'create-order' %}"> Create Order</a>
+                        <hr>
+                        <h6>WARRANTY</h6>
+                        <span class="text-muted">1 Year</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <p> Recommended for you </p>
-        </div>
+
     </div>
 </section>
 {% endblock %}

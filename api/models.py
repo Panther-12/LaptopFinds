@@ -58,7 +58,7 @@ class Cart(models.Model):
     amount = models.DecimalField(max_digits=8, decimal_places=2, null=True)
 
     def __str__(self):
-        return self.product
+        return str(self.quantity)
     
     def setAmount(self,):
         self.amount = self.product.price
@@ -72,7 +72,7 @@ class Cart(models.Model):
         cart_products = []
         for product in products:
             details = Products.objects.get(pk=product.product.pk)
-            cart_products.append({"product_name":details.name, "product_id":details.pk, "vendor_id":details.vendor.pk, "vendor_name":details.vendor.username, "quantity_left":details.inventory,"price":product.amount, "quantity":product.quantity})
+            cart_products.append({"cart_id":product.id, "product_name":details.name, "product_id":details.pk, "vendor_id":details.vendor.pk, "vendor_name":details.vendor.username, "quantity_left":details.inventory,"price":product.amount, "quantity":product.quantity})
         return cart_products
     
 

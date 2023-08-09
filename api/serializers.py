@@ -50,6 +50,11 @@ class AddItemToCartSerializer(serializers.ModelSerializer):
         model = Cart
         fields = ['customer', 'customer_id', 'product', 'product_id', 'quantity']
 
+class UpdateQuantity(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ['quantity']
+
 class VendorSerializedOrders(serializers.ModelSerializer):
     class Meta:
         model = VendorOrders

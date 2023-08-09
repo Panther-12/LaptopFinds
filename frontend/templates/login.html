@@ -1,3 +1,19 @@
 {% extends 'base.html' %}
 
-{% block content%}{% endblock %}
+{% block content%}
+{% load crispy_forms_tags %}
+
+<!--Login--> 
+<section>
+  <div class="container p-5" >
+    {% include 'messages.html' %}
+    <h1>Login</h1>
+    <form method="POST" class="p-5 bg-light" style="width:50%; border-radius: 5px;">
+      {% csrf_token %}
+      {{ login_form|crispy }}
+      <button class="btn btn-primary" type="submit">Login</button>
+      <p class="text-center mt-2">Don't have an account? <a href="/site/register">Create an account</a>.</p>
+    </form>
+  </div>
+</section>
+{% endblock %}

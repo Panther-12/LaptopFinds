@@ -37,7 +37,7 @@ def category(request):
 @csrf_exempt
 def product(request):
     if request.method == 'GET':
-        if request.user.groups.filter(name="Customer") or request.user.groups.filter(name="admins"):
+        if request.user.groups.filter(name="customers") or request.user.groups.filter(name="admins") or request.user.groups.filter(name=""):
             products = Products.objects.select_related('category').all()
             products = paginate_items(request, products)
             serialized_data = ProductsSerializer(products, many=True)
@@ -87,7 +87,7 @@ def singleProduct(request, id):
 @csrf_exempt
 @permission_classes([IsAuthenticated])
 def cart(request):
-    if request.user.groups.filter(name="Customer") or request.user.groups.filter(name="admins"):
+    if request.user.groups.filter(name="customers") or request.user.groups.filter(name="admins"):
         if request.method == 'POST':
                 cart_item = AddItemToCartSerializer(data=request.data)
                 if cart_item.is_valid():
@@ -114,9 +114,58 @@ def cart(request):
                     return Response({"message":f"{user_cart}"}, status.HTTP_204_NO_CONTENT)
                 # Check if there is an accepted offer update from the customer
                 total = calculate_cart_total(user_cart)
-                return Response({"total": total,"cart":user_cart}, status.HTTP_200_OK)
+                order_sum=0
+                for item in user_cart:
+                    order_sum+=item['quantity']
+                return Response({"total": total,"cart":user_cart, "items":order_sum}, status.HTTP_200_OK)
             return Response({"message":"User does not exist"}, status.HTTP_204_NO_CONTENT)
     return Response({"message":"Create a customer account to proceed"}, status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['PUT', 'DELETE'])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def updateQuantity(request, id):
+    try:
+        cart_item = Cart.objects.get(pk=id)
+    except cart_item.DoesNotExist:
+        return Response({"message":"cart item does not exist"}, status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        if request.user.groups.filter(name="customers") or request.user.groups.filter(name="admins"):
+            # update the quantity
+            cart_item.quantity+=1
+            cart_item.product.inventory-=1
+            cart_item.amount=cart_item.product.price*cart_item.quantity
+            cart_item.save(update_fields=['quantity', 'amount','product'])
+            return Response({"message":"Product added successfully"}, status.HTTP_200_OK)
+        return Response({"message":"only customers and admins allowed"}, status.HTTP_403_FORBIDDEN)
+    if request.method == 'DELETE':
+        if request.user.groups.filter(name="customers") or request.user.groups.filter(name="admins"):
+            # update the quantity
+            if cart_item.quantity >1:
+                cart_item.quantity-=1
+            cart_item.product.inventory+=1
+            cart_item.amount=cart_item.product.price*cart_item.quantity
+            cart_item.save(update_fields=['quantity', 'amount','product'])
+            return Response({"message":"Product removed successfully"}, status.HTTP_200_OK)
+        return Response({"message":"only customers and admins allowed"}, status.HTTP_403_FORBIDDEN)
+    return Response(status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def deleteCartItem(request, id):
+    try:
+        cart_item = Cart.objects.get(pk=id)
+    except cart_item.DoesNotExist:
+        return Response({"message":"cart item does not exist"}, status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        if request.user.groups.filter(name="customers") or request.user.groups.filter(name="admins"):
+            cart_item.delete()
+            return Response({"message":"Product deleted successfully"}, status.HTTP_200_OK)
+        return Response({"message":"only customers and admins allowed"}, status.HTTP_403_FORBIDDEN)
+    return Response(status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET','POST'])
@@ -151,18 +200,19 @@ def order(request):
         get_cart = cart_products.generateCart(user.pk)
         products = ''
         user_offers = Offers.objects.filter(_from_id=user.pk)
-        for item in get_cart:
-            products += f"{item['product_name']:item['price']:item['vendor_name']},"
-        # Check for any accepted offers for this product from customer
-        # Get offer amounts from the user for each and every product in the list
-            for offer in user_offers:
-                if offer.state == True:
-                    if offer.product.pk == item['product_id']:
-                        if offer.counter_amount == 0.0:
-                            item['price'] = offer.offer_amount
-                        item['price'] = offer.counter_amount
-            vendor_order = VendorOrders(vendor_id=item['vendor_id'], product_name=item['product_name'], product_price=item['price'], quantity=item['quantity'], customer_name=user.username, customer_phone=user.last_name)
-            vendor_order.save()
+        if(len(user_offers)>0):
+            for item in get_cart:
+                products += f"{item['product_name']:item['price']:item['vendor_name']},"
+            # Check for any accepted offers for this product from customer
+            # Get offer amounts from the user for each and every product in the list
+                for offer in user_offers:
+                    if offer.state == True:
+                        if offer.product.pk == item['product_id']:
+                            if offer.counter_amount == 0.0:
+                                item['price'] = offer.offer_amount
+                            item['price'] = offer.counter_amount
+                vendor_order = VendorOrders(vendor_id=item['vendor_id'], product_name=item['product_name'], product_price=item['price'], quantity=item['quantity'], customer_name=user.username, customer_phone=user.last_name)
+                vendor_order.save()
         total = calculate_cart_total(get_cart)
         customer_order = Orders(customer_id=user.id, products=products, total=total, status=False, date=now())
         customer_order = customer_order.save()
@@ -214,7 +264,7 @@ def singleOrder(request, id):
 def offer(request):
     user = User.objects.filter(username=request.user)[0]
     if request.method == 'POST':
-        if request.user.groups.filter(name="customer") or request.user.groups.filter(name="admins"):
+        if request.user.groups.filter(name="customers") or request.user.groups.filter(name="admins"):
             serialized_offer = CreateCustomerOfferSerializer(data=request.data)
             if serialized_offer.is_valid():
                 serialized_offer.save()

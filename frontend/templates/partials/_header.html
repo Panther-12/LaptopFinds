@@ -40,10 +40,10 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             {% if request.user.is_authenticated %}
-              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              <li><a class="dropdown-item" href="{% url 'user_logout' %}">Logout</a></li>
             {% else %}
               <li><a class="dropdown-item" href="{% url 'user_login' %}">Login</a></li>
-              <li><a class="dropdown-item" href="{% url 'register' %}">Sign in</a></li>
+              <li><a class="dropdown-item" href="{% url 'register' %}">Sign up</a></li>
             {% endif %}
           </ul>
         </li>
@@ -58,11 +58,19 @@
 <script>
   fetch("{% url 'api:order' %}").then(response => response.json()).then(data => {
       console.log(data)
-      document.getElementById('orders-badge').innerHTML=data.length;
+      var length = 0
+      if(data.length !== undefined ){
+          length = data.length
+      }
+      document.getElementById('orders-badge').innerHTML=length;
   })
   fetch("{% url 'api:offer' %}").then(response => response.json()).then(data => {
       console.log(data)
-      document.getElementById('offers-badge').innerHTML=data.length;
+      var length = 0
+        if(data.length !== undefined ){
+          length = data.length
+        }
+      document.getElementById('offers-badge').innerHTML=length;
   })
 
   fetch("{% url 'api:cart' %}").then(response => response.json()).then(data => {

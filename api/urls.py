@@ -11,4 +11,6 @@ urlpatterns = [
         path('offer/', views.offer, name='offer'),
         path('offer/<int:id>', views.singleOffer, name='single-offer'),
         path('cart/', views.cart, name='cart'),
+        path('cart/<int:id>', views.updateQuantity, name="update-quantity"),
+        path('deleteCartItem/<int:id>', views.deleteCartItem, name="deleteCartItem")
 ]

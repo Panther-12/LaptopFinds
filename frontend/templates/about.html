@@ -2,4 +2,228 @@
 {% load static %}
 
 {% block content %}
+<style>
+	/* The actual timeline (the vertical ruler) */
+.main-timeline {
+  position: relative;
+}
+
+/* The actual timeline (the vertical ruler) */
+.main-timeline::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  background-color: #939597;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -3px;
+}
+
+/* Container around content */
+.timeline {
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+}
+
+/* The circles on the timeline */
+.timeline::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -13px;
+  background-color: #939597;
+  border: 5px solid #f5df4d;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Place the container to the left */
+.left {
+  padding: 0px 40px 20px 0px;
+  left: 0;
+}
+
+/* Place the container to the right */
+.right {
+  padding: 0px 0px 20px 40px;
+  left: 50%;
+}
+
+/* Add arrows to the left container (pointing right) */
+.left::before {
+  content: " ";
+  position: absolute;
+  top: 18px;
+  z-index: 1;
+  right: 30px;
+  border: medium solid white;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent white;
+}
+
+/* Add arrows to the right container (pointing left) */
+.right::before {
+  content: " ";
+  position: absolute;
+  top: 18px;
+  z-index: 1;
+  left: 30px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+
+/* Fix the circle for containers on the right side */
+.right::after {
+  left: -12px;
+}
+
+/* Media queries - Responsive timeline on screens less than 600px wide */
+@media screen and (max-width: 600px) {
+  /* Place the timelime to the left */
+  .main-timeline::after {
+    left: 31px;
+  }
+
+  /* Full-width containers */
+  .timeline {
+    width: 100%;
+    padding-left: 70px;
+    padding-right: 25px;
+  }
+
+  /* Make sure that all arrows are pointing leftwards */
+  .timeline::before {
+    left: 60px;
+    border: medium solid white;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+  }
+
+  /* Make sure all circles are at the same spot */
+  .left::after,
+  .right::after {
+    left: 18px;
+  }
+
+  .left::before {
+    right: auto;
+  }
+
+  /* Make all right containers behave like the left ones */
+  .right {
+    left: 0%;
+  }
+}
+</style>
+	<section>
+		{% include 'messages.html' %}
+		<div class="container">
+			<div class="row gx-5 gy-5">
+				<div class="title-wrapper p-6">
+					<h2><strong><span class="text-muted">Welcome to LaptopFinds</span> - Your Gateway to Affordable Laptops for University Students!</strong></h2>
+				</div>
+			</div>
+			<div class="row gx-5 gy-5">
+				<div class="part1-wrapper p-6">
+					<p>
+						At LaptopFinds, we understand the financial constraints faced by university students, and our mission is to provide them with high-quality laptops at budget-friendly prices. We believe that every student deserves access to the best technology to aid their academic pursuits without breaking the bank. That's why we have created a unique platform that revolutionizes the way students purchase laptops - through our innovative offer system.
+					</p>
+				</div>
+			</div>
+			<div class="row gx-5 gy-5">
+				<div class="part2-wrapper p-6">
+					<h4><strong>Our Key Selling Point: The Offer System</strong></h4>
+					<p>
+						The heart of our platform lies in our offer system, a groundbreaking feature that sets us apart from traditional online retailers. We understand that every student's budget is different, and our offer system allows students to propose a price they are willing to pay for a laptop tagged with the "bargain" label. This way, students have the opportunity to get their desired laptops at a price that aligns with their financial constraints.
+					</p>
+				</div>
+			</div>
+			<div class="row gx-5 gy-5">
+				<div class="part3-wrapper">
+					<h4><strong>How It Works</strong></h4>
+						  <div class="container py-5">
+						    <div class="main-timeline">
+						      <div class="timeline left">
+						        <div class="card">
+						          <div class="card-body p-4">
+						            <h3>Bargain Tag</h3>
+						            <p class="mb-0">Only laptops marked with the "bargain" tag are eligible for the offer system. These laptops are carefully curated to ensure they meet our quality standards while still offering significant discounts.</p>
+						          </div>
+						        </div>
+						      </div>
+						      <div class="timeline right">
+						        <div class="card">
+						          <div class="card-body p-4">
+						            <h3>Propose Your Price</h3>
+						            <p class="mb-0">Students can browse through our extensive collection of laptops and select the ones with the bargain tag that catch their eye. Once they find a laptop they wish to purchase, they can propose a price within their budget using our user-friendly offer system.</p>
+						          </div>
+						        </div>
+						      </div>
+						      <div class="timeline left">
+						        <div class="card">
+						          <div class="card-body p-4">
+						            <h3>Vendor Decision</h3>
+						            <p class="mb-0"> After a student submits their offer, our platform securely forwards it to the vendor. The vendor then has the option to either accept or decline the proposed price. If the vendor accepts the offer, the laptop is sold at the agreed-upon price.</p>
+						          </div>
+						        </div>
+						      </div>
+						      <div class="timeline right">
+						        <div class="card">
+						          <div class="card-body p-4">
+						            <h3>Negotiation</h3>
+						            <p class="mb-0">In some cases, the vendor may counter the student's offer with a slightly higher price. This opens up a negotiation opportunity, allowing students and vendors to find a mutually beneficial price point</p>
+						          </div>
+						        </div>
+						      </div>
+						      <div class="timeline left">
+						        <div class="card">
+						          <div class="card-body p-4">
+						            <h3>Affordable Laptop Purchasing</h3>
+						            <p class="mb-0">Thanks to our offer system, students can obtain their dream laptops at prices they can afford, eliminating the financial burden of acquiring essential tools for their academic journey</p>
+						          </div>
+						        </div>
+						      </div>
+						    </div>
+						  </div>
+				</div>
+			</div>
+			<div class="row gx-5 gy-5">
+				<div class="part2-wrapper p-6">
+					<h4><strong>Quality Assurance</strong></h4>
+					<p>
+						At LaptopFinds, we prioritize quality above all else. We have a stringent vetting process for laptops marked with the "bargain" tag to ensure they are in excellent condition and will serve students effectively. We work only with trusted vendors and reputable manufacturers to maintain the highest standard of laptop quality.
+					</p>
+				</div>
+			</div>
+			<div class="row gx-5 gy-5">
+				<div class="part2-wrapper p-6">
+					<h4><strong>Community and Support</strong></h4>
+					<p>
+						We believe in building a vibrant community of students who share their experiences, tips, and insights on laptop usage and making the most out of their devices. Our support team is always ready to assist students throughout their shopping journey, answering queries, providing guidance, and resolving any issues promptly.
+					</p>
+				</div>
+			</div>
+			<div class="row gx-5 gy-5">
+				<div class="part2-wrapper p-6">
+					<h4><strong>Security and Privacy</strong></h4>
+					<p>
+						At LaptopFinds, we take the security and privacy of our users seriously. All transactions and data exchanges on our platform are safeguarded by the latest encryption protocols, ensuring a safe and worry-free shopping experience.
+					</p>
+				</div>
+			</div>
+			<div class="row gx-5 gy-5">
+				<div class="part2-wrapper p-6">
+					<h4><strong>Join LaptopFinds Today!</strong></h4>
+					<p>
+						We invite all university students to become part of the LaptopFinds community, where affordability meets quality. Empower your academic journey with a laptop that fits your budget and supports your goals. Let our innovative offer system make your laptop buying experience enjoyable and stress-free.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}
