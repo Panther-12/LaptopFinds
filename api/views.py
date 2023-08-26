@@ -111,7 +111,7 @@ def cart(request):
                 new_cart = Cart()
                 user_cart = new_cart.generateCart(customerId=user_id)
                 if not isinstance(user_cart, list):
-                    return Response({"message":f"{user_cart}"}, status.HTTP_204_NO_CONTENT)
+                    return Response({"message":user_cart}, status.HTTP_204_NO_CONTENT)
                 # Check if there is an accepted offer update from the customer
                 total = calculate_cart_total(user_cart)
                 order_sum=0

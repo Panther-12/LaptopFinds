@@ -2,59 +2,102 @@
 {% load static %}
 
 {% block content %}
+<style type="text/css">
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid blue; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        position: relative;
+        margin-left: 45%;
+        margin-top: 17%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.loader-wrapper{
+    z-index: 5;
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background-color: black;
+    opacity: 0.8;
+    display: none;
+}
+</style>
 <section>
+    <div class="loader-wrapper"><div class="loader"></div></div>
     <div class="container p-4" style="color:white; align-items: center; background:url('/static/img/Shopping3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-blend-mode: lighten; box-sizing: border-box; opacity:0.8; ">
         <p style="letter-spacing: 2px; ">Cart for {{ request.user }}</p>
     </div>
     {% include 'messages.html' %}
-    <div class="container">
-        <div class="row gx-5 gy-5" style="height:100%">
-            <div class="col-8">
-                {% for item in user_cart.cart %}
-                <div class="row p-4 bg-white" style="width:100%; height:fit-content; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
-                    <p>Cart ({{item.cart_id}})</p>
-                    <div class="col-4" id="image-wrapper">
-                        <a href="/site/product/{{ item.product_id }}"><img src="/static/img/samples/LENOVO.jpg" style="width:100px; height:120px;"></a>
-                        <hr>
-                        <a disabled style="color:{% if item.quantity_left >= 5 %}green; {% else %}red; {% endif %}">{{ item.quantity_left }} units left</a>
-                    </div>
-                    <div class="col-5" id="product-info-wrapper">
-                        <span class="badge rounded-pill bg-primary">Ex UK</span>
-                        <h3>{{ item.product_name }}</h3>
-                        <p>Vendor: <a href="{% url 'api:product' %}">{{ item.vendor_name }}</a></p>
-                        <span class="text-muted">Quantity: {{ item.quantity }}</span></span>
-                        <hr>
-                        <p><strong>Ksh. {{ item.price }}</strong><p>
-                    </div>
-                    <div class="col-3" id="right-wrapper" >
-                        <div class="buttons-wrapper" style="display:flex; flex-direction:row; justify-content:space-between;">
-                            <div class="input-group" style="width:100%;">
-                                <a class="btn {% if item.quantity == 1%}btn-secondary{% else %}btn-success{% endif %}" id="basic-addon1" href="/site/remove-product/{{ item.cart_id }}">-</a>
-                                <input type="text" class="form-control" value="{{ item.quantity }}" placeholder="1">
-                                <a class="btn btn-success" id="basic-addon2" href="/site/add-product/{{ item.cart_id }}">+</a>
-                            </div> 
+    {% if not user_cart.cart is sequence %}
+        <div class="container">
+            <div class="row gx-5 gy-5" style="height:100%">
+                <div class="col-8">
+                    {% for item in user_cart.cart %}
+                    <div class="row p-4 bg-white" style="width:100%; height:fit-content; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                        <p>Cart ({{item.cart_id}})</p>
+                        <div class="col-4" id="image-wrapper">
+                            <a href="/site/product/{{ item.product_id }}"><img src="/static/img/samples/LENOVO.jpg" style="width:100px; height:120px;"></a>
+                            <hr>
+                            <a disabled style="color:{% if item.quantity_left >= 5 %}green; {% else %}red; {% endif %}">{{ item.quantity_left }} units left</a>
                         </div>
-                        <a class="p-2" id="basic-addon3" href="/site/deleteCartItem/{{ item.cart_id }}" style="text-decoration: none;"><img src="{% static 'img/Delete.png' %}" style="width:25px; height:25px;"/></a>
+                        <div class="col-5" id="product-info-wrapper">
+                            <span class="badge rounded-pill bg-primary">Ex UK</span>
+                            <h3>{{ item.product_name }}</h3>
+                            <p>Vendor: <a href="{% url 'api:product' %}">{{ item.vendor_name }}</a></p>
+                            <span class="text-muted">Quantity: {{ item.quantity }}</span></span>
+                            <hr>
+                            <p><strong>Ksh. {{ item.price }}</strong><p>
+                        </div>
+                        <div class="col-3" id="right-wrapper" >
+                            <div class="buttons-wrapper" style="display:flex; flex-direction:row; justify-content:space-between;">
+                                <div class="input-group" style="width:100%;">
+                                    <a class="btn {% if item.quantity == 1%}btn-secondary{% else %}btn-success{% endif %}" id="basic-addon1" href="/site/remove-product/{{ item.cart_id }}">-</a>
+                                    <input type="text" class="form-control" value="{{ item.quantity }}" placeholder="1">
+                                    <a class="btn btn-success" id="basic-addon2" href="/site/add-product/{{ item.cart_id }}">+</a>
+                                </div> 
+                            </div>
+                            <a class="delete-link p-2" id="basic-addon3" href="/site/deleteCartItem/{{ item.cart_id }}" style="text-decoration: none;" onclick="loading()"><img src="{% static 'img/Delete.png' %}" style="width:25px; height:25px;"/></a>
+                            <!-- <div class="loader"></div>  -->
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-            <div class="col-4" style="position: fixed; margin-left:60%; margin-top: 0;">
-                <div class="checkout-wrapper p-4 mt-4" style="width:100%; height:fit-content;">
-                    <div class="bottom-details p-4 bg-white" style="width:100%; height:100%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
-                        <div class="order-details">
-                            <p><strong>Order quantity:</strong> {{ user_cart.items }}</p>
-                            <p><strong>Total Amount:</strong> Ksh.{{ user_cart.total }}</p>
+                <div class="col-4" style="position: fixed; margin-left:60%; margin-top: 0;">
+                    <div class="checkout-wrapper p-4 mt-4" style="width:100%; height:fit-content;">
+                        <div class="bottom-details p-4 bg-white" style="width:100%; height:100%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                            <div class="order-details">
+                                <p><strong>Order quantity:</strong> {{ user_cart.items }}</p>
+                                <p><strong>Total Amount:</strong> Ksh.{{ user_cart.total }}</p>
+                            </div>
+                            <a class="btn btn-primary" href="{% url 'create-order' %}"> Create Order</a>
+                            <hr>
+                            <h6>WARRANTY</h6>
+                            <span class="text-muted">1 Year</span>
                         </div>
-                        <a class="btn btn-primary" href="{% url 'create-order' %}"> Create Order</a>
-                        <hr>
-                        <h6>WARRANTY</h6>
-                        <span class="text-muted">1 Year</span>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div>
+    {% else %}
+        <div class="container">
+            {{ user_cart }}
+        </div>
+    {% endif %}
 </section>
+<script type="text/javascript">
+    function loading(){
+        var currentComponent = document.querySelector(".loader-wrapper")
+        currentComponent.display = "block"
+        setTimeout(()=>{
+            currentComponent.display = "none"
+        }, 10000);
+    }
+</script>
 {% endblock %}

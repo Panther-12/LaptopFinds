@@ -1,4 +1,28 @@
 {% load static %}
+<style type="text/css">
+    .social-links-wrapper>li>img{
+        margin-right: 5px;
+    }
+    .social-links-wrapper>li>a{
+        text-decoration: none;
+        transition: 0.5s ease;
+        color: inherit;
+    }
+    .social-links-wrapper>li>a:hover{
+        text-decoration: underline;
+        color: green;
+        transform: scale(1.2);
+    }
+    .nav-links-wrapper>li>a{
+        text-decoration: none;
+        color: inherit;
+    }
+    .nav-links-wrapper>li>a:hover{
+        text-decoration: underline;
+        color: green;
+        transform: scale(1.2);
+    }
+</style>
 <footer id="index_footer">
     <div class="container">
         <div class="row ">
@@ -15,19 +39,19 @@
                 <a class="navbar-brand" href="{% url 'home' %}" style="color:white">
                     Links
                 </a>
-                <ul>
-                    <li aria-current="true" style="color:inherit; background-color:grey; width:fit-content; text-decoration:none"><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'about' %}" style="color:inherit; text-decoration:none">About</a></li>
-                    <li><a href="{% url 'products' %}" style="color:inherit; text-decoration:none">Buy products</a></li>
-                    <li><a href="{% url 'offers' %}" style="color:inherit; text-decoration:none">Get Discounts</a></li>
-                    <li><a href="{% url 'cart' %}" style="color:inherit; text-decoration:none">Shop</a></li>
+                <ul class="nav-links-wrapper">
+                    <li aria-current="true"><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'products' %}">Buy products</a></li>
+                    <li><a href="{% url 'offers' %}">Get Discounts</a></li>
+                    <li><a href="{% url 'cart' %}">Shop</a></li>
                 </ul>
             </div>
             <div class="col-4 mt-5">
                 <a class="navbar-brand" href="{% url 'home' %}" style="color:white">
                     Social Media
                 </a>
-                <ul>
+                <ul class="social-links-wrapper">
                     <li><img src="{% static 'img/LinkedIn.png' %}" style="width: 25px; height: 25px;" /><a href="https://www.linkedin.com/in/nimrod-nyongesa-walwe/">Linkedin</a></li>
                     <li><img src="{% static 'img/Twitter.png' %}" style="width: 25px; height: 25px;"/><a href="https://twitter.com/NimrodWalwe">Twitter</a></li>
                     <li><img src="{% static 'img/Github.png' %}" style="width: 25px; height: 25px;"/><a href="https://github.com/Panther-12">Github</a></li>
