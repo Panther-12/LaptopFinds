@@ -89,13 +89,17 @@
             </div>
         </div>
 
-        <div class="row" id="product-details" style="border:1px solid black;  background-color:white;">
-            <div class="col-8" style="border:1px solid black;">
-                <div class="row" id="description"></div>
-                <div class="row" id="specification"></div>
+        <div class="row" id="product-details" >
+            <div class="col-8" style="background-color:white;">
+                <div class="row" id="description">
+                    <h6><strong>DESCRIPTION</strong></h6>
+                    <p>{{ product.description }}</p>
+                </div>
+                <div class="row" id="specification">
+                    <h6><strong>SPECIFICATION</strong></h6>
+                </div>
                 <div class="row" id="more_from_vendor"></div>
             </div>
-            <div class="col-4" style="border:1px solid black;"></div>
         </div>
     </div>
 </section>

@@ -34,7 +34,7 @@
                                 <a class="btn btn-success" id="basic-addon2" href="/site/add-product/{{ item.cart_id }}">+</a>
                             </div> 
                         </div>
-                        <a class="badge11 bg-danger" id="basic-addon3" href="/site/deleteCartItem/{{ item.cart_id }}" style="text-decoration: none;">Delete</a>
+                        <a class="p-2" id="basic-addon3" href="/site/deleteCartItem/{{ item.cart_id }}" style="text-decoration: none;"><img src="{% static 'img/Delete.png' %}" style="width:25px; height:25px;"/></a>
                     </div>
                 </div>
                 {% endfor %}
