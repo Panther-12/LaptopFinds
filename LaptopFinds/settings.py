@@ -86,27 +86,27 @@ WSGI_APPLICATION = 'LaptopFinds.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ecommerce',
-        'HOST' : '127.0.0.1',
-        'PORT' : '3306',
-        'USER' : 'root',
-        'PASSWORD' : '12345',
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'URL': 'postgresql://postgres:9qvVmroTabxd8ATPZtv3@containers-us-west-49.railway.app:6561/railway',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': '9qvVmroTabxd8ATPZtv3',
-#         'HOST': 'containers-us-west-49.railway.app',
-#         'PORT': '6561',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'ecommerce',
+#         'HOST' : '127.0.0.1',
+#         'PORT' : '3306',
+#         'USER' : 'root',
+#         'PASSWORD' : '12345',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'URL': 'postgresql://postgres:9qvVmroTabxd8ATPZtv3@containers-us-west-49.railway.app:6561/railway',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '9qvVmroTabxd8ATPZtv3',
+        'HOST': 'containers-us-west-49.railway.app',
+        'PORT': '6561',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
