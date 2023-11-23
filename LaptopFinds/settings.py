@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-import django-heroku
+import django_heroku
 import dj_database_url
 from django.contrib.messages import constants as messages
 from decouple import config
@@ -231,4 +231,4 @@ MESSAGE_TAGS = {
         messages.ERROR: 'alert-danger',
 }
 
-django-heroku.settings(locals)
+django_heroku.settings(locals())
