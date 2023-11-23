@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -99,15 +99,26 @@ WSGI_APPLICATION = 'LaptopFinds.wsgi.application'
 #         'PASSWORD' : '12345',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': config('ENGINE'),
+#         'URL': config('URL'),
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': config('PASSWORD'),
+#         'HOST': config('HOST'),
+#         'PORT': config('PORT'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': config('ENGINE'),
-        'URL': config('URL'),
-        'NAME': config('NAME'),
-        'USER': config('USER'),
-        'PASSWORD': config('PASSWORD'),
-        'HOST': config('HOST'),
-        'PORT': config('PORT'),
+        'ENGINE': os.getenv('ENGINE'),
+        'URL': os.getenv('URL'),
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT'),
     }
 }
 
